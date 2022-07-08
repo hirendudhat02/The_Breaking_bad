@@ -4,6 +4,23 @@
             "outputFile": "/Users/mac/Desktop/Codeal_Infoway/The_Breaking_bad/The_Breaking_bad/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-large-v4/values-large-v4.xml",
             "map": [
                 {
+                    "source": "/Users/mac/.gradle/caches/transforms-3/192030893c850541140c0c37e19f8e7c/transformed/material-1.1.0/res/values-large-v4/values-large-v4.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,177",
+                        "endColumns": "121,133",
+                        "endOffsets": "172,306"
+                    },
+                    "to": {
+                        "startLines": "11,12",
+                        "startColumns": "4,4",
+                        "startOffsets": "752,874",
+                        "endColumns": "121,133",
+                        "endOffsets": "869,1003"
+                    }
+                },
+                {
                     "source": "/Users/mac/.gradle/caches/transforms-3/d7ab347af8e13327171252bca451c75a/transformed/appcompat-1.4.1/res/values-large-v4/values-large-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10",
