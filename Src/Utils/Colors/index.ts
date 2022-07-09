@@ -5,5 +5,6 @@ const COLORS = {
   SILVER: '#ABABAB',
   LIGHT_GREEN: '#18CA75',
   LIGHT_SILVER: '#C4C4C4',
+  GREEN: '#18CA75',
 };
 export default COLORS;

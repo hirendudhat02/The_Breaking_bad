@@ -1,5 +1,6 @@
 export const CHARACTER_REQUEST = 'CHARACTER_REQUEST';
 export const CHARACTER_RESPONSE = 'CHARACTER_RESPONSE';
 export const FAVOURITE_DATA = 'FAVOURITE_DATA';
+export const LOADER = 'LOADER';
 
 export const SET_LOADER = 'SET_LOADER';

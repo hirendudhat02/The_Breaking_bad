@@ -1,90 +1,70 @@
 import React, {useState, useEffect} from 'react';
-
-// import all the components we are going to use
-import {
-  SafeAreaView,
-  Text,
-  StyleSheet,
-  View,
-  FlatList,
-  TextInput,
-} from 'react-native';
+import {SafeAreaView, Text, View, FlatList, Alert} from 'react-native';
 import SearchBar from 'react-native-dynamic-search-bar';
 import COLORS from '../../Utils/Colors';
-import {scale} from '../../Utils/Helper/Scalling';
+import {useDispatch, useSelector} from 'react-redux';
 import ICONS from '../../Utils/Images';
+import {
+  characterRequest,
+  favouriteData,
+} from '../../Redux/Action/CharacterAction';
 import styles from './style';
+import {LoaderAction} from '../../Redux/Action/LoaderAction';
+import Loader from '../../Component/Loader/index';
+import Item from '../../Component/ItemComp';
+
 const Search = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
-  const [masterDataSource, setMasterDataSource] = useState([]);
 
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-      .then(response => response.json())
-      .then(responseJson => {
-        setFilteredDataSource(responseJson);
-        setMasterDataSource(responseJson);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }, []);
+  const dispatch = useDispatch();
+
+  const characterRes = useSelector((state: any) => state.charReducer);
+
+  const loaderRes = useSelector((state: any) => state.loader);
 
   const searchFilterFunction = text => {
     // Check if searched text is not blank
-    if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource
-      // Update FilteredDataSource
-      const newData = masterDataSource.filter(function (item) {
-        const itemData = item.title
-          ? item.title.toUpperCase()
-          : ''.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredDataSource(newData);
-      setSearch(text);
+    if (characterRes.data !== null) {
+      if (text) {
+        const newData = characterRes.data.filter(function (item) {
+          const itemData = item.name
+            ? item.name.toUpperCase()
+            : ''.toUpperCase();
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) != -1;
+        });
+        setFilteredDataSource(newData);
+        setSearch(text);
+      } else {
+        console.log('else part run:::::::::::::');
+
+        setFilteredDataSource(characterRes.data);
+        setSearch(text);
+      }
     } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
-      setFilteredDataSource(masterDataSource);
-      setSearch(text);
+      console.log('null useeffect');
+      dispatch(LoaderAction(true));
+      dispatch(characterRequest());
     }
   };
-
-  const ItemView = ({item}) => {
-    return (
-      // Flat List Item
-      <Text style={styles.itemStyle} onPress={() => getItem(item)}>
-        {item.id}
-        {'.'}
-        {item.title.toUpperCase()}
-      </Text>
-    );
+  const likePress = index => {
+    dispatch(favouriteData(index));
   };
-
-  const ItemSeparatorView = () => {
-    return (
-      // Flat List Item Separator
-      <View
-        style={{
-          height: 0.5,
-          width: '100%',
-          backgroundColor: COLORS.BLACK,
-        }}
-      />
-    );
-  };
-
-  const getItem = item => {
-    // Function for click on an item
-    alert('Id : ' + item.id + ' Title : ' + item.title);
-  };
+  const ItemView = ({item, index}) => (
+    <Item
+      profile={item.img}
+      headText={item.name}
+      subText={item.nickname}
+      onPress={() => Alert.alert('Profile Open')}
+      likeOnPress={() => likePress(index)}
+      item={item.fav}
+    />
+  );
 
   return (
     <SafeAreaView style={styles.container}>
+      <Loader value={loaderRes.loader} />
       <View style={styles.container}>
         <SearchBar
           style={styles.textInputStyle}
@@ -95,19 +75,19 @@ const Search = ({navigation}) => {
           textInputStyle={styles.textStyle}
           searchIconImageSource={ICONS.BACK}
           onSearchPress={() => navigation.goBack()}
-          clearIconImageStyle={{tintColor: COLORS.WHITE}}
+          clearIconImageStyle={styles.searchcloseButton}
         />
-        {search == null || undefined ? (
-          <View style={{backgroundColor: COLORS.BLACK, flex: 1}}>
+        {search.length == 0 ? (
+          <View style={styles.dataNotFoundContaner}>
             <Text style={styles.NoCharText}>No character found</Text>
             <Text style={styles.tryText}>Try gain</Text>
           </View>
         ) : (
           <FlatList
             data={filteredDataSource}
-            keyExtractor={(item, index) => index.toString()}
-            ItemSeparatorComponent={ItemSeparatorView}
             renderItem={ItemView}
+            numColumns={2}
+            contentContainerStyle={styles.contentContainer}
           />
         )}
       </View>

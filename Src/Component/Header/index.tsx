@@ -15,7 +15,12 @@ const Header = (props: headerProps) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.HeadTextContainer}>
-        <Text style={styles.headText}>{headText}</Text>
+        <Text
+          style={
+            headText == 'Favourites' ? styles.favheadText : styles.headText
+          }>
+          {headText}
+        </Text>
       </View>
       <View style={styles.headimageContainer}>
         <TouchableOpacity onPress={searchOnPress}>

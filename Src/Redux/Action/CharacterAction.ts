@@ -1,7 +1,7 @@
 import * as types from '../ActionTypes/index';
 
 export function characterResponse(data) {
-  console.log('characterResponse::::::::::::::::::');
+  console.log('characterResponse:::::::::::::::::: ', data);
 
   return {
     type: types.CHARACTER_RESPONSE,

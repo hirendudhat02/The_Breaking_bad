@@ -1,14 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  FlatList,
-  Image,
-  StatusBar,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
+import {View, SafeAreaView, FlatList, Alert} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Header from '../../Component/Header';
 import Item from '../../Component/ItemComp';
@@ -17,93 +8,47 @@ import {
   characterRequest,
   favouriteData,
 } from '../../Redux/Action/CharacterAction';
-import {scale} from '../../Utils/Helper/Scalling';
+import {LoaderAction} from '../../Redux/Action/LoaderAction';
 import ICONS from '../../Utils/Images';
 import styles from './style';
+import Loader from '../../Component/Loader';
 
-// const data = [
-//   {
-//     id: 1,
-//     text: 'Walter White',
-//     image: require('../../../Assets/Icons/image.png'),
-//     subText: 'Heisenberg',
-//     likeImage: ICONS.LIKE,
-//   },
-//   {
-//     id: 2,
-//     text: 'Walter White',
-//     image: require('../../../Assets/Icons/image.png'),
-//     subText: 'Heisenberg',
-//     likeImage: ICONS.LIKE,
-//   },
-//   {
-//     id: 3,
-//     text: 'Walter White',
-//     image: require('../../../Assets/Icons/image.png'),
-//     subText: 'Heisenberg',
-//     likeImage: ICONS.LIKE,
-//   },
-// ];
 const Home = ({navigation}) => {
   const [data, setData] = useState([]);
   const dispatch = useDispatch();
 
   const characterRes = useSelector((state: any) => state.charReducer);
-  console.log('characterRes::::', characterRes);
+
+  const loaderRes = useSelector((state: any) => state.loader);
 
   useEffect(() => {
     if (characterRes.data !== null) {
       setData(characterRes.data);
-      console.log('==================================================');
-      console.log(
-        'characterRes.data::::::::::::::::::::::::::::',
-        characterRes.data,
-      );
-      console.log('==================================================');
     } else {
-      console.log('errror:::::::');
-      //   dispatch(characterRequest());
+      console.log('null useeffect');
     }
-  }, []);
+  }, [characterRes]);
   useEffect(() => {
     dispatch(characterRequest());
+    dispatch(LoaderAction(true));
   }, []);
 
-  const likePress = (item, index) => {
+  const likePress = index => {
     dispatch(favouriteData(index));
   };
   const dataRenderItem = ({item, index}) => (
-    console.log('index:::::::::', index),
-    console.log('item:::::::', item),
-    console.log('item.fav:::::::', item.fav),
-    console.log('index.fav:::::::', index.fav),
-    (
-      <View style={styles.flatMainContainer}>
-        <TouchableOpacity onPress={() => Alert.alert('Profilr Open')}>
-          <View style={styles.flatSubContainer}>
-            <Image source={{uri: item.img}} style={styles.ProfileImageStyle} />
-            <View style={styles.itemContainer}>
-              <View style={styles.textContainer}>
-                <Text style={styles.flatHeadText}>{item.name}</Text>
-                <Text style={styles.flatSubText}>{item.nickname}</Text>
-              </View>
-              <TouchableOpacity onPress={() => likePress(item, index)}>
-                {index.fav == undefined ? (
-                  <Image source={ICONS.LIKE} style={styles.likeImage} />
-                ) : index.fav == true ? (
-                  <Image source={ICONS.LIKE_FILL} style={styles.likeImage} />
-                ) : (
-                  <Image source={ICONS.LIKE} style={styles.likeImage} />
-                )}
-              </TouchableOpacity>
-            </View>
-          </View>
-        </TouchableOpacity>
-      </View>
-    )
+    <Item
+      profile={item.img}
+      headText={item.name}
+      subText={item.nickname}
+      onPress={() => Alert.alert('Profilr Open')}
+      likeOnPress={() => likePress(index)}
+      item={item.fav}
+    />
   );
   return (
     <View style={styles.mainContainer}>
+      <Loader value={loaderRes.loader} />
       <Status />
       <SafeAreaView style={styles.mainContainer}>
         <Header

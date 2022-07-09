@@ -25,12 +25,27 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     lineHeight: scale(28),
     color: COLORS.LIGHT_GREEN,
+    fontFamily: 'Roboto',
   },
   tryText: {
     fontSize: scale(24),
     fontWeight: '300',
     lineHeight: scale(28),
     color: COLORS.SILVER,
+    fontFamily: 'Roboto',
   },
+  dataNotFoundContaner: {
+    backgroundColor: COLORS.BLACK,
+    flex: 1,
+    alignItems: 'center',
+    marginVertical: scale(50),
+  },
+
+  contentContainer: {
+    marginHorizontal: scale(10),
+    marginVertical: scale(25),
+  },
+  ProfileImageStyle: {height: scale(194), width: scale(150)},
+  searchcloseButton: {tintColor: COLORS.WHITE},
 });
 export default styles;

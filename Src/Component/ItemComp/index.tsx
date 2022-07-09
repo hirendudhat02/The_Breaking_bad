@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {scale} from '../../Utils/Helper/Scalling';
+import ICONS from '../../Utils/Images';
 import styles from './style';
 
 interface itemProps {
@@ -11,17 +12,11 @@ interface itemProps {
   likeFillButton?: any;
   likeOnPress?: () => void;
   onPress?: () => void;
+  itemFav?: any;
+  item?: any;
 }
 const Item = (props: itemProps) => {
-  const {
-    profile,
-    headText,
-    subText,
-    likeButton,
-    likeOnPress,
-    onPress,
-    likeFillButton,
-  } = props;
+  const {profile, headText, subText, likeOnPress, onPress, item} = props;
   return (
     <View style={styles.flatMainContainer}>
       <TouchableOpacity onPress={onPress}>
@@ -33,8 +28,13 @@ const Item = (props: itemProps) => {
               <Text style={styles.flatSubText}>{subText}</Text>
             </View>
             <TouchableOpacity onPress={likeOnPress}>
-              <Image source={likeFillButton} style={styles.likeImage} />
-              <Image source={likeButton} style={styles.likeImage} />
+              {item === undefined ? (
+                <Image source={ICONS.LIKE} style={styles.likeImage} />
+              ) : item === true ? (
+                <Image source={ICONS.LIKE_FILL} style={styles.likeImage} />
+              ) : (
+                <Image source={ICONS.LIKE} style={styles.likeImage} />
+              )}
             </TouchableOpacity>
           </View>
         </View>

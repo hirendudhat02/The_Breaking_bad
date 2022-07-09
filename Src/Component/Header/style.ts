@@ -16,6 +16,13 @@ const styles = StyleSheet.create({
     fontSize: scale(21.5),
     fontWeight: '700',
     color: COLORS.WHITE,
+    fontFamily: 'Roboto',
+  },
+  favheadText: {
+    fontSize: scale(21.5),
+    fontWeight: '700',
+    color: COLORS.GREEN,
+    fontFamily: 'Roboto',
   },
   headimageContainer: {
     flexDirection: 'row',
